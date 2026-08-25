@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-font-smoothing: antialiased; }
+  body { @apply bg-canvas text-ink font-sans; }
+  h1, h2, h3, h4 { @apply font-display tracking-tight; }
+  :focus-visible { @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-canvas; }
+}
+
+@layer components {
+  .card { @apply bg-surface border border-line rounded-2xl shadow-card; }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 h-10
+           text-sm font-medium transition-colors disabled:opacity-50
+           disabled:cursor-not-allowed whitespace-nowrap;
+  }
+  .btn-primary { @apply btn bg-brand-600 text-white hover:bg-brand-700 shadow-lift; }
+  .btn-gold    { @apply btn bg-gold-500 text-ink hover:bg-gold-600 shadow-[0_12px_32px_-12px_rgba(245,179,1,.45)]; }
+  .btn-ghost   { @apply btn border border-line bg-surface text-ink hover:bg-brand-50 hover:border-brand-200; }
+  .btn-danger  { @apply btn bg-rose-600 text-white hover:bg-rose-700; }
+  .btn-sm      { @apply h-8 px-3 text-xs rounded-lg; }
+
+  .field {
+    @apply w-full h-10 rounded-xl border border-line bg-surface px-3 text-sm
+           placeholder:text-muted/60 focus:border-brand-500 focus:ring-2
+           focus:ring-brand-100 transition;
+  }
+  .label { @apply block text-xs font-medium text-muted mb-1.5; }
+
+  /* Identifiers are machine-issued — they always read as data, never as prose */
+  .ident { @apply font-mono text-[13px] tracking-tight text-brand-800; }
+
+  .th {
+    @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-muted
+           text-left px-4 py-3 bg-canvas/70 border-b border-line;
+  }
+  .td { @apply px-4 py-3 text-sm border-b border-line/70; }
+
+  /* Section heading used above dashboard blocks */
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+}
+
+@layer utilities {
+  /* Faint blueprint grid — the sheet the whole product is built around */
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .rise {
+    animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+  .print-area { box-shadow: none !important; }
+
+  /* Keep the navy and gold — browsers drop backgrounds otherwise */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* The card is laid out at 340px wide; 0.6 brings it to a true CR80
+     54 x 85.6 mm. The slot reserves the scaled footprint so front and
+     back don't land on top of each other. */
+  .id-card-slot { width: 54mm; height: 86mm; overflow: hidden; margin: 0 6mm 6mm 0; }
+  .id-card { transform: scale(0.6); transform-origin: top left; border-radius: 3mm; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
