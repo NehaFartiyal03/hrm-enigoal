@@ -86,11 +86,22 @@ app.use(
 );
 
 /* =========================================================
+   ROOT ROUTE
+========================================================= */
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "HRM Backend is running successfully",
+  });
+});
+
+/* =========================================================
    HEALTH CHECK
 ========================================================= */
 
 app.get("/api/health", (req, res) => {
-  res.json({
+  res.status(200).json({
     success: true,
     status: "up",
     time: new Date().toISOString(),
@@ -133,9 +144,8 @@ connectDB()
 
     startCronJobs();
 
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on port ${PORT}`);
-      console.log(`API: http://localhost:${PORT}`);
       console.log(`Health: http://localhost:${PORT}/api/health`);
     });
   })
