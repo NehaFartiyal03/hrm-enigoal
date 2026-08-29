@@ -131,6 +131,13 @@ export default function EmployeeProfile() {
             <Row k="Date of joining" v={emp.dateOfJoining && new Date(emp.dateOfJoining).toLocaleDateString("en-IN")} mono />
             <Row k="Reports to" v={emp.reportingTo ? `${emp.reportingTo.firstName} ${emp.reportingTo.lastName || ""}` : null} />
             <Row k="Work location" v={emp.workLocation} />
+            {can("hr") && (
+              <Row
+                k="Salary (CTC)"
+                v={emp.ctc != null && emp.ctc !== "" ? `₹${Number(emp.ctc).toLocaleString("en-IN")} / yr` : null}
+                mono
+              />
+            )}
           </dl>
         </div>
 

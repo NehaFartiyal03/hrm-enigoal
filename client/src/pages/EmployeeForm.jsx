@@ -8,7 +8,7 @@ const EMPTY = {
   firstName: "", lastName: "", gender: "", dateOfBirth: "", bloodGroup: "",
   maritalStatus: "", nationality: "Indian",
   email: "", phone: "", designation: "", department: "", employmentType: "full-time",
-  dateOfJoining: "", status: "probation", workLocation: "",
+  dateOfJoining: "", status: "probation", workLocation: "", ctc: "",
   pan: "", aadhaarNumber: "", passportNumber: "", uan: "",
   address: { line1: "", city: "", state: "", pincode: "" },
   emergencyContact: { name: "", relation: "", phone: "" },
@@ -84,6 +84,8 @@ export default function EmployeeForm({ open, employee, departments = [], onClose
     try {
       const payload = { ...form };
       if (!payload.department) delete payload.department;
+      if (payload.ctc === "" || payload.ctc === null) delete payload.ctc;
+      else payload.ctc = Number(payload.ctc);
       const { data } = employee
         ? await api.put(`/employees/${employee._id}`, payload)
         : await api.post("/employees", payload);
@@ -259,6 +261,16 @@ export default function EmployeeForm({ open, employee, departments = [], onClose
             </Field>
             <Field label="Work location">
               <input className="field" value={form.workLocation} onChange={(e) => set("workLocation", e.target.value)} />
+            </Field>
+            <Field label="Salary (CTC, per annum)">
+              <input
+                type="number"
+                min="0"
+                className="field font-mono"
+                placeholder="e.g. 600000"
+                value={form.ctc}
+                onChange={(e) => set("ctc", e.target.value)}
+              />
             </Field>
           </div>
         )}
